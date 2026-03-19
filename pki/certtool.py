@@ -15,9 +15,9 @@ from types import SimpleNamespace
 DEFAULT_SUBJECT = {
     "C": "US",
     "ST": "NY",
-    "L": "Jericho",
-    "O": "1-800-Flowers.com",
-    "OU": "Information Security",
+    "L": "City",
+    "O": "org_name",
+    "OU": "org_department",
 }
 
 
@@ -140,7 +140,7 @@ def interactive_bundle() -> SimpleNamespace:
         key=prompt_with_default("Path to private key", f"{cn}.key"),
         chain=prompt_with_default("Path to certificate chain", f"{cn.replace('.', '_')}_chain.cer"),
         output_dir=Path(prompt_with_default("Output directory", ".")),
-        output_name=prompt_with_default("PFX filename", f"azappgw_{cn}.pfx"),
+        output_name=prompt_with_default("PFX filename", f"bundle_{cn}.pfx"),
         friendly_name=prompt_with_default("Friendly name (optional)", "") or None,
         password=password,
         no_password=no_password,
@@ -211,7 +211,7 @@ def bundle_pfx(args: argparse.Namespace) -> None:
 
     key_path = Path(args.key).resolve()
     chain_path = Path(args.chain).resolve()
-    output_name = args.output_name or f"azappgw_{args.cn}.pfx"
+    output_name = args.output_name or f"bundle_{args.cn}.pfx"
     pfx_path = output_dir / output_name
 
     if not key_path.exists():
@@ -314,7 +314,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     bundle_parser.add_argument(
         "--output-name",
-        help="Override the PFX filename (default: azappgw_<CN>.pfx)",
+        help="Override the PFX filename (default: bundle_<CN>.pfx)",
     )
     bundle_parser.add_argument("--friendly-name", help="Optional friendly name for the PFX")
     bundle_parser.add_argument(
