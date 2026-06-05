@@ -1,14 +1,4 @@
 #!/usr/bin/env python3
-"""
-Portable backup script.
-
-Enhancements in this build:
-- Each source is copied under its own subfolder in the destination.
-- Subfolder name is preserved exactly (including spaces) by default.
-- You can override the subfolder name per source using a mapping in --sources:
-- Fixed: skip-if-up-to-date logic now correctly compares source vs destination mtime.
-- Built-in terminal progress bar shows byte-level copy progress.
-"""
 
 import os
 import argparse
@@ -24,12 +14,6 @@ from typing import Callable, Iterable, List, Tuple, Optional
 # -------------------------
 
 def parse_sources_with_mapping(s: str) -> List[Tuple[Path, Optional[str]]]:
-    """
-    Parse comma-separated sources, where each item can be either:
-      - /absolute/path
-      - /absolute/path=Subfolder Name With Spaces
-    Returns a list of tuples: (source_path, explicit_subfolder_name_or_None)
-    """
     items = [p.strip() for p in s.split(',') if p.strip()]
     result: List[Tuple[Path, Optional[str]]] = []
     for item in items:
